@@ -15,12 +15,16 @@ class App extends Component {
       (contact) => contact.name.toLowerCase() === name.toLowerCase(),
     )
 
-  addNewContact = (contact) =>
-    !this.isContact(contact.name)
+  addNewContact = (contact) => {
+    const { name, number } = contact
+    if (name === '' || number === '') return
+
+    return !this.isContact(name)
       ? this.setState((prevState) => ({
           contacts: [...prevState.contacts, contact],
         }))
-      : alert(`${contact.name} is already in contact`)
+      : alert(`${name} is already in contact`)
+  }
 
   newFilter = (filter) => this.setState({ filter })
 
