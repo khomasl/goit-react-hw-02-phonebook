@@ -1,26 +1,16 @@
 import { Component } from 'react'
 import { v4 as uuid } from 'uuid'
+import s from './ContactForm.module.css'
 
+const INITIAL_STATE = {
+  name: '',
+  number: '',
+}
 export class ContactForm extends Component {
-  nameIdtitle = uuid()
-  prodIdDesc = uuid()
-  prodIdSize = uuid()
-  prodIdokGoogle = uuid()
+  nameId = uuid()
+  numberId = uuid()
 
-  state = {
-    name: '',
-  }
-
-  handleCheck = (e) => {
-    // console.log('value:', e.target.value); // нам не надо
-    const { name, checked } = e.target
-    const { okGoogle } = this.state
-    console.log('name:', name)
-    console.log('checked:', checked)
-    this.setState({
-      okGoogle: !okGoogle,
-    })
-  }
+  state = { ...INITIAL_STATE }
 
   handleChange = (e) => {
     const { name, value } = e.target
@@ -29,85 +19,46 @@ export class ContactForm extends Component {
     })
   }
 
-  handleChangeAllInputs = (e) => {
-    const { name, type, checked, value } = e.target
-    this.setState({ [name]: type === 'checkbox' ? checked : value })
-  }
-
   handleSubmit = (e) => {
     e.preventDefault()
-    // const { name } = this.state
-    const name = e.target.value
-    console.log(`e.target`, e.target.value)
-    console.log(`this.state`, this.state)
-    console.log(`this.props`, this.props)
-    const contact = { name }
-    this.setState({ contact })
-    this.props.addNewContact({ name }) // !!!метод из App!!!
+    const { name, number } = this.state
+    const id = uuid()
+    this.props.addNewContact({ id, name, number })
     this.resetForm()
-    console.log(`contacts`, this.state)
   }
-  resetForm = () => {
-    this.setState({ ...this.state })
-  }
+
+  resetForm = () => this.setState({ ...INITIAL_STATE })
 
   render() {
-    const { title, desc, size, okGoogle } = this.state
-    const {
-      handleChangeAllInputs,
-      handleSubmit,
-      nameIdtitle,
-      prodIdDesc,
-      prodIdSize,
-      prodIdokGoogle,
-    } = this
+    const { handleChange, handleSubmit, nameId, numberId } = this
 
     return (
-      <form onSubmit={handleSubmit}>
-        <label htmlFor={nameIdtitle}>Title</label>
+      <form className={s.form} onSubmit={handleSubmit}>
+        <label htmlFor={nameId}>Name</label>
         <input
           type="text"
           name="name"
+          id={nameId}
+          onChange={handleChange}
           pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
           title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
           required
         />
-        <br />
-        {/* <label htmlFor={prodIdDesc}>Description</label>
+
+        <label htmlFor={numberId}>Number</label>
         <input
-          type="text"
-          id={prodIdDesc}
-          name="desc"
-          value={desc}
-          onChange={handleChangeAllInputs}
+          type="tel"
+          name="number"
+          id={numberId}
+          onChange={handleChange}
+          pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+          title="Номер телефона должен состоять из цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +"
+          required
         />
-        <br />
-        <label htmlFor={prodIdSize}>Choose your size</label>
-        <select
-          name="size"
-          value={size}
-          onChange={handleChangeAllInputs}
-          id={prodIdSize}
-        >
-          <option value="" disabled>
-            ...
-          </option>
-          <option value="s">s</option>
-          <option value="m">m</option>
-          <option value="l">l</option>
-        </select>
-        <br />
-        <label htmlFor={prodIdokGoogle}>Agree?</label>
-        <input
-          type="checkbox"
-          name="okGoogle"
-          id={prodIdokGoogle}
-          checked={okGoogle}
-          onChange={handleChangeAllInputs}
-        /> */}
-        <br />
-        {/* <button type="submit" disabled={!okGoogle}> */}
-        <button type="submit">Add contact</button>
+
+        <button className={s.btnForm} type="submit">
+          Add contact
+        </button>
       </form>
     )
   }
