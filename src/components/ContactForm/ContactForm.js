@@ -30,6 +30,7 @@ export class ContactForm extends Component {
   resetForm = () => this.setState({ ...INITIAL_STATE })
 
   render() {
+    const { name, number } = this.state
     const { handleChange, handleSubmit, nameId, numberId } = this
 
     return (
@@ -39,6 +40,7 @@ export class ContactForm extends Component {
           type="text"
           name="name"
           id={nameId}
+          value={name}
           onChange={handleChange}
           pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
           title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
@@ -50,6 +52,7 @@ export class ContactForm extends Component {
           type="tel"
           name="number"
           id={numberId}
+          value={number}
           onChange={handleChange}
           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
           title="Номер телефона должен состоять из цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +"
